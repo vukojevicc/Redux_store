@@ -6,6 +6,8 @@ import Products from "./components/Shop/Products"
 import Notification from "./components/UI/Notification"
 import { uiActions } from "./store/ui-slice"
 
+let isInitial = true
+
 function App() {
   const dispatch = useDispatch()
 
@@ -14,6 +16,8 @@ function App() {
   const notification = useSelector((state) => state.ui.notification)
 
   useEffect(() => {
+    
+
     const sendCartData = async () => {
       dispatch(
         uiActions.showNotification({
@@ -41,8 +45,11 @@ function App() {
           message: "Sent cart data successfully!",
         })
       )
+    }
 
-      const responseData = await response.json()
+    if (isInitial) {
+      isInitial = false
+      return
     }
 
     sendCartData().catch((error) => {
@@ -54,7 +61,7 @@ function App() {
         })
       )
     })
-  }, [cart])
+  }, [cart, dispatch])
 
   return (
     <>
